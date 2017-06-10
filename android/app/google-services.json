@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "120752156192",
+    "firebase_url": "https://flutter-caht.firebaseio.com",
+    "project_id": "flutter-caht",
+    "storage_bucket": "flutter-caht.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120752156192:android:b2508ceb6b1a098d",
+        "android_client_info": {
+          "package_name": "com.osama.first"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120752156192-hajavd6neb9tnsuh1nttf9p74p93hgru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.osama.first",
+            "certificate_hash": "6eb3a29a4638b243faef34dcf36e449704442c49"
+          }
+        },
+        {
+          "client_id": "120752156192-46t57ti5ge00itcip3jmgpgtgeoug850.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVBy4b6vqa-MnvB2QW5zBt8Bj1v8JehSA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120752156192-6bckdih3elvu3fk3uj4v2rhlrq2u9j6r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.osama.first"
+              }
+            },
+            {
+              "client_id": "120752156192-46t57ti5ge00itcip3jmgpgtgeoug850.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
