@@ -30,7 +30,12 @@ class ChatMessage extends StatelessWidget{
               new Text(text.value['senderName'],style: Theme.of(context).textTheme.subhead),
               new Container(
                 margin: const EdgeInsets.only(top: 5.0),
-                child: new Text(text.value['text'])
+                child: text.value['image']!=null ?
+                  new Image.network(
+              text.value['image'],
+                width: 250.0,
+              ) :
+        new Text(text.value['text'])
               )
             ],
           )
