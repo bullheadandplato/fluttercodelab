@@ -1,5 +1,9 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'dart:async';
 import 'ChatMessage.dart';
 
@@ -11,9 +15,12 @@ class ChatScreenWidget extends StatefulWidget {
   ChatScreenState get screenState => _screenState;
 }
 
-class ChatScreenState extends State<ChatScreenWidget> with TickerProviderStateMixin {
-  List<ChatMessage> _messages=<ChatMessage>[];
+class ChatScreenState extends State<ChatScreenWidget> {
+
   final googleSignIn=new GoogleSignIn();
+  final auth        =FirebaseAuth.instance;
+  final analytics=new FirebaseAnalytics();
+  final reference = FirebaseDatabase.instance.reference().child("messages");
 
   List<ChatMessage> get messages => _messages;
   bool _isComposing=false;
@@ -26,11 +33,15 @@ class ChatScreenState extends State<ChatScreenWidget> with TickerProviderStateMi
       body: new Column(
         children: <Widget>[
           new Flexible(
-            child: new ListView.builder(
+            child: new FirebaseAnimatedList(
+              query:reference,
+              sort: (a,b)=>b.key.compareTo(a.key),
               padding: new EdgeInsets.all(8.0),
               reverse: true,
-              itemBuilder: (_,int index)=>_messages[index],
-              itemCount: _messages.length,
+              itemBuilder: (_,DataSnapshot snapshot,Animation<double> animation){
+                return new ChatMessage(text:snapshot,animationController:animation);
+              }
+
             ),
           ),
           new Divider(height: 1.0,),
@@ -80,6 +91,15 @@ class ChatScreenState extends State<ChatScreenWidget> with TickerProviderStateMi
       googleSignInAccount=await googleSignIn.signInSilently();
       if(googleSignInAccount==null){
         await googleSignIn.signIn();
+        analytics.logLogin();
+      }
+      if(auth.currentUser==null){
+        GoogleSignInAuthentication credentials=
+            await googleSignIn.currentUser.authentication;
+        await auth.signInWithGoogle(
+          idToken: credentials.idToken,
+          accessToken: credentials.accessToken,
+        );
       }
 
     }
@@ -92,6 +112,11 @@ class ChatScreenState extends State<ChatScreenWidget> with TickerProviderStateMi
 
   }
   void _sendMessage(String text){
+    reference.push().set({
+      'text':text,
+      'senderName':googleSignIn.currentUser.displayName,
+      'senderPhotoUrl':googleSignIn.currentUser.photoUrl
+    });
      ChatMessage message=new ChatMessage(
         text: text,
         animationController: new AnimationController(
@@ -102,5 +127,6 @@ class ChatScreenState extends State<ChatScreenWidget> with TickerProviderStateMi
       _messages.insert(0, message);
     });
     message.animationController.forward();
+    analytics.logEvent(name: "send_message");
   }
 }

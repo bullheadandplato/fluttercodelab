@@ -9,7 +9,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
  ChatScreenWidget _widget=new ChatScreenWidget();
- final analytics=new FirebaseAnalytics();
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
